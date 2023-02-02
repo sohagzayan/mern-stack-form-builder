@@ -15,28 +15,10 @@ const userSchema = new mongoose.Schema({
     unique: true,
     validate: [validator.isEmail, "Please enter your valid Email"],
   },
-  bio: {
-    type: String,
-    maxLength: [100, "bio cannot exceed 100 character"],
-  },
-  address: {
-    type: String,
-    maxLength: [50, "address cannot exceed 28 character"],
-  },
   password: {
     type: String,
     required: [true, "Please enter your password"],
     minlength: [8, "Password cannot have more then 8 character"],
-  },
-  avatar: {
-    publicId: {
-      type: String,
-      required: true,
-    },
-    url: {
-      type: String,
-      required: true,
-    },
   },
   role: {
     type: String,
@@ -46,18 +28,16 @@ const userSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
-  resetPasswordToken: String,
-  resetPasswordExpires: Date,
 });
 
-userSchema.methods.getResetPassword = function () {
-  const resetToken = crypto.randomBytes(20).toString("hex");
-  this.resetPasswordToken = crypto
-    .createHash("sha256")
-    .update(resetToken)
-    .digest("hex");
-  this.resetPasswordExpires = Date.now() + 15 * 60 * 1000;
-  return resetToken;
-};
+// userSchema.methods.getResetPassword = function () {
+//   const resetToken = crypto.randomBytes(20).toString("hex");
+//   this.resetPasswordToken = crypto
+//     .createHash("sha256")
+//     .update(resetToken)
+//     .digest("hex");
+//   this.resetPasswordExpires = Date.now() + 15 * 60 * 1000;
+//   return resetToken;
+// };
 
 module.exports = mongoose.model("User", userSchema);
